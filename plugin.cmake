@@ -7,7 +7,7 @@ set(SDK_INCLUDE_DIR "" CACHE PATH "Override path to vacuum-im header files")
 if (NOT SDK_INCLUDE_DIR)
 	include_directories("${CMAKE_INSTALL_PREFIX}/${INSTALL_INCLUDES}")
 else (NOT SDK_INCLUDE_DIR)
-	include_directories("${SDK_INCLDUE_DIR}")
+	include_directories("${SDK_INCLUDE_DIR}")
 endif (NOT SDK_INCLUDE_DIR)
 
 if (WIN32)
