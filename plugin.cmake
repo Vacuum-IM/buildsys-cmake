@@ -2,13 +2,7 @@ if (PLUGIN_NAME STREQUAL "")
 	set (PLUGIN_NAME "${CMAKE_PROJECT_NAME}")
 endif (PLUGIN_NAME STREQUAL "")
 
-set(SDK_INCLUDE_DIR "" CACHE PATH "Override path to vacuum-im header files")
-
-if (NOT SDK_INCLUDE_DIR)
-	include_directories("${CMAKE_INSTALL_PREFIX}/${INSTALL_INCLUDES}")
-else (NOT SDK_INCLUDE_DIR)
-	include_directories("${SDK_INCLUDE_DIR}")
-endif (NOT SDK_INCLUDE_DIR)
+include_directories("${VACUUM_SDK_PATH}")
 
 if (WIN32)
 	set(CMAKE_SHARED_LIBRARY_PREFIX "")

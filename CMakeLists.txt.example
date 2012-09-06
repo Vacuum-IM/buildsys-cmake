@@ -19,9 +19,6 @@ set(MOC_HEADERS pluginname.h) # files to be moc-ified
 #set(QT_USE_QTDBUS ON)
 #set(QT_USE_QTWEBKIT ON)
 
-# Build system assumes that *.ts files are named translations/${lang}/${pluginname}.ts
-set(LOCALIZED_LANGS "ru;pl;de;uk")
-
 include("${CMAKE_SOURCE_DIR}/cmake/config.cmake")
-include("${CMAKE_SOURCE_DIR}/cmake/translations.cmake")
+include("${CMAKE_SOURCE_DIR}/translations/languages.cmake")
 include("${CMAKE_SOURCE_DIR}/cmake/plugin.cmake")
