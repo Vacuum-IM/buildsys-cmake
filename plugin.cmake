@@ -17,10 +17,11 @@ include(${QT_USE_FILE})
 add_definitions(-DQT_PLUGIN -DQT_SHARED)
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_HEADERS})
-qt4_wrap_ui(UI_HEADERS ${UIS})
+qt4_wrap_ui(UI_HEADERS ${UIS})	
+qt4_add_resources(RCC_SOURCES ${RCCS})
 
 add_translations(TRANSLATIONS ${PLUGIN_NAME} ${HEADERS} ${SOURCES} ${UIS})
-add_library(${PLUGIN_NAME} SHARED ${SOURCES} ${MOC_SOURCES} ${UI_HEADERS} ${TRANSLATIONS})
+add_library(${PLUGIN_NAME} SHARED ${SOURCES} ${MOC_SOURCES} ${UI_HEADERS} ${RCC_SOURCES} ${TRANSLATIONS})
 
 if (NOT UTILS_LIB)
 	find_library(UTILS_LIB vacuumutils ${CMAKE_INSTALL_PREFIX})
