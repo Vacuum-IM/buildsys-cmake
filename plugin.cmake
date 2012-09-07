@@ -26,7 +26,7 @@ endif(LOCALIZED_LANGS)
 add_library(${PLUGIN_NAME} SHARED ${SOURCES} ${MOC_SOURCES} ${UI_HEADERS} ${RCC_SOURCES} ${TRANSLATIONS})
 
 if (NOT UTILS_LIB)
-	find_library(UTILS_LIB vacuumutils ${CMAKE_INSTALL_PREFIX})
+	find_library(UTILS_LIB vacuumutils ${VACUUM_LIB_PATH})
 endif (NOT UTILS_LIB)
 
 target_link_libraries(${PLUGIN_NAME} ${UTILS_LIB} ${QT_LIBRARIES} ${ADD_LIBS})
