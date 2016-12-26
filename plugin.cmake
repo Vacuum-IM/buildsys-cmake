@@ -4,11 +4,19 @@ endif (PLUGIN_NAME STREQUAL "")
 
 include_directories("${VACUUM_SDK_PATH}")
 
+if(POLICY CMP0020)
+	cmake_policy(SET CMP0020 NEW)
+endif()
+
 if (WIN32)
 	set(CMAKE_SHARED_LIBRARY_PREFIX "")
 endif (WIN32)
 
 add_definitions(-DQT_PLUGIN -DQT_SHARED)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 if (LOCALIZED_LANGS)
     add_translations(TRANSLATIONS ${PLUGIN_NAME} ${HEADERS} ${SOURCES} ${UIS})

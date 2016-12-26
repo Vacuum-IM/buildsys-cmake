@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.2)
 
 project(pluginname)
 #set(PLUGIN_NAME pluginname) # defaults to CMAKE_PROJECT_NAME, if not set
@@ -13,12 +13,13 @@ set(MOC_HEADERS pluginname.h) # files to be moc-ified
 #file(GLOB HEADERS "*.h")
 #file(GLOB UIS "**.ui")
 
-# By default, only QtNetwork and QtXml modules are linked, if you need other
-# modules - set corresponding variables for FindQt4 CMake module:
-#   http://www.cmake.org/cmake/help/cmake-2-8-docs.html#module:FindQt4
-#set(QT_USE_QTDBUS ON)
-#set(QT_USE_QTWEBKIT ON)
+include_directories("${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}")
 
 include("${CMAKE_SOURCE_DIR}/cmake/config.cmake")
 include("${CMAKE_SOURCE_DIR}/translations/languages.cmake")
 include("${CMAKE_SOURCE_DIR}/cmake/plugin.cmake")
+
+find_package(Qt5 COMPONENTS Widgets Xml REQUIRED)
+qt5_use_modules(${PLUGIN_NAME} Widgets Xml)
+
+#install(DIRECTORY "resources/resource_folder" DESTINATION "${INSTALL_RESOURCES}")
