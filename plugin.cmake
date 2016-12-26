@@ -8,17 +8,7 @@ if (WIN32)
 	set(CMAKE_SHARED_LIBRARY_PREFIX "")
 endif (WIN32)
 
-find_package(Qt4 REQUIRED)
-
-set(QT_USE_QTNETWORK YES)
-set(QT_USE_QTXML YES)
-include(${QT_USE_FILE})
-
 add_definitions(-DQT_PLUGIN -DQT_SHARED)
-
-qt4_wrap_cpp(MOC_SOURCES ${MOC_HEADERS})
-qt4_wrap_ui(UI_HEADERS ${UIS})	
-qt4_add_resources(RCC_SOURCES ${RCCS})
 
 if (LOCALIZED_LANGS)
     add_translations(TRANSLATIONS ${PLUGIN_NAME} ${HEADERS} ${SOURCES} ${UIS})
@@ -37,6 +27,9 @@ else (WIN32)
 	install(TARGETS ${PLUGIN_NAME}
 		LIBRARY DESTINATION "${INSTALL_PLUGINS}")
 endif (WIN32)
+
+find_package(Qt5Core REQUIRED)
+qt5_use_modules(${PLUGIN_NAME} Core)
 
 # uninstall target
 configure_file(

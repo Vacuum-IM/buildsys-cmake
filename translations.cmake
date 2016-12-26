@@ -1,3 +1,4 @@
+find_package(Qt5LinguistTools REQUIRED)
 add_custom_target(updatets)
 
 macro(set_enabled_langs langs)
@@ -50,23 +51,34 @@ macro(add_translations outvar tsname)
 	foreach(SRC ${ARGN})
 		set(TS_SRCS ${TS_SRCS} "${SRC}")
 	endforeach(SRC)
+	add_custom_target(updatets_${tsname})
+	add_dependencies(updatets updatets_${tsname})
 	foreach(LANG ${USED_LANGS})
 		set(TS "${CMAKE_SOURCE_DIR}/translations/${LANG}/${tsname}.ts")
-		set(QM "${CMAKE_BINARY_DIR}/translations/${LANG}/${tsname}.qm")
-		# Update *.ts
-		add_custom_command(TARGET updatets POST_BUILD
-				COMMAND "${QT_LUPDATE_EXECUTABLE}" ${LUPDATE_OPTS} ${TS_SRCS} -ts "${TS}" 
-				DEPENDS ${TS_SRCS}
-				WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-				COMMENT "Updating ${TS}")
-		# Generate *.qm
-		file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/translations/${LANG}")
-		add_custom_command(OUTPUT ${QM}
-				COMMAND "${QT_LRELEASE_EXECUTABLE}" ${LRELEASE_OPTS} "${TS}" -qm "${QM}"
-				DEPENDS ${TS})
-		set(QMS ${QMS} "${QM}")
-		# Install *.qm
-		install(FILES "${QM}" DESTINATION "${INSTALL_TRANSLATIONS}/${LANG}")
+		if (EXISTS ${TS})
+			if (APPLE)
+				set(QM "${CMAKE_BINARY_DIR}/${INSTALL_TRANSLATIONS}/${LANG}/${tsname}.qm")
+			else (APPLE)
+				set(QM "${CMAKE_BINARY_DIR}/translations/${LANG}/${tsname}.qm")
+			endif (APPLE)
+			# Update *.ts
+			add_custom_command(TARGET updatets_${tsname} POST_BUILD
+					COMMAND "${Qt5_LUPDATE_EXECUTABLE}" ${LUPDATE_OPTS} ${TS_SRCS} -ts "${TS}"
+					DEPENDS ${TS_SRCS}
+					WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+					COMMENT "Updating ${TS}")
+			# Generate *.qm
+			file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/translations/${LANG}")
+			add_custom_command(OUTPUT ${QM}
+					COMMAND "${Qt5_LRELEASE_EXECUTABLE}" ${LRELEASE_OPTS} "${TS}" -qm "${QM}"
+					DEPENDS ${TS})
+			set(QMS ${QMS} "${QM}")
+			# Install *.qm
+			if (NOT APPLE) # on Mac OS X they are writted to the bundle directly
+                install(FILES "${QM}" DESTINATION "${INSTALL_TRANSLATIONS}/${LANG}")
+			endif (NOT APPLE)
+			lang_display_name(LANG_NAME ${LANG})
+		endif (EXISTS ${TS})
 	endforeach(LANG)
 	set(${outvar} "${QMS}")
 endmacro(add_translations)
