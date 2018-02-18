@@ -28,6 +28,7 @@ if (NOT UTILS_LIB)
 endif (NOT UTILS_LIB)
 
 target_link_libraries(${PLUGIN_NAME} ${UTILS_LIB} ${QT_LIBRARIES} ${ADD_LIBS})
+
 if (WIN32)
 	install(TARGETS ${PLUGIN_NAME}
 		RUNTIME DESTINATION "${INSTALL_PLUGINS}")
@@ -35,9 +36,6 @@ else (WIN32)
 	install(TARGETS ${PLUGIN_NAME}
 		LIBRARY DESTINATION "${INSTALL_PLUGINS}")
 endif (WIN32)
-
-find_package(Qt5Core REQUIRED)
-qt5_use_modules(${PLUGIN_NAME} Core)
 
 # uninstall target
 configure_file(
